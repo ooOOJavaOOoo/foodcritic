@@ -211,6 +211,7 @@ module FoodCritic
           tag_text = File.read fc_file
           tags = tag_text.split(/\s/)
         rescue Errno::EACCES
+          puts "Could not open the Foodcritic file at #{fc_file}"
         end
       end
       tags
