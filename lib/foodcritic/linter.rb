@@ -127,6 +127,8 @@ module FoodCritic
       Review.new(paths, warnings)
     end
 
+    # return cookbook rule matches
+    # @return [Array] matches in this form: [{:filename=>"../metadata.rb", :matched=>"../metadata.rb", :line=>1, :column=>1}]
     def cookbook_matches(state)
       cbk_matches = matches(state[:rule].recipe, state[:ast], state[:file])
 
@@ -147,6 +149,7 @@ module FoodCritic
       cbk_matches
     end
 
+    # return non-cookbook rule matches
     def other_matches(state)
       matches(state[:rule].send(state[:path_type]), state[:ast], state[:file])
     end
@@ -194,11 +197,14 @@ module FoodCritic
     end
 
     # Some rules are version specific.
+    # @return [Boolean]
     def applies_to_version?(rule, version)
       return true unless version
       rule.applies_to.yield(Gem::Version.create(version))
     end
 
+    # return tags defined in the .foodcritic file in the cookbook
+    # @return [Array] array of tags defined in .foodcritic file 
     def cookbook_tags(file)
       tags = []
       fc_file = @options[:rule_file] || "#{cookbook_dir(file)}/.foodcritic"
@@ -243,6 +249,8 @@ module FoodCritic
       cook_val
     end
 
+    # given a file return the type of file in Chef context
+    # @param [String] file - path to a file in a cookbook
     def dsl_method_for_file(file)
       dir_mapping = {
         "attributes" => :attributes,
