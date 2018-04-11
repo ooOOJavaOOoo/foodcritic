@@ -76,9 +76,7 @@ module FoodCritic
       # Loop through each file to be processed and apply the rules
       files = files_to_process(paths)
 
-      if options[:progress]
-        puts "Checking #{files.count} files"
-      end
+      puts "Checking #{files.count} files" if options[:progress]
 
       files.each do |p|
         relevant_tags = if options[:tags].any?
